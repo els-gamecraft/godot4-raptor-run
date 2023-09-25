@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccyto1xlxblvm"]
+[gd_scene load_steps=6 format=3 uid="uid://ccyto1xlxblvm"]
 
 [ext_resource type="Texture2D" uid="uid://dqaryv0dboks0" path="res://assets/assets/sprites/Background/background_static.png" id="1_apbco"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_vi0j3"]
 [ext_resource type="PackedScene" uid="uid://c5km7f2nih4cc" path="res://scenes/platform.tscn" id="2_stc43"]
 [ext_resource type="PackedScene" uid="uid://dat5u1s3oqtsx" path="res://scenes/player.tscn" id="3_fxkk5"]
+[ext_resource type="AudioStream" uid="uid://c8f3li7c88u8j" path="res://assets/assets/sounds/collect.wav" id="6_kvgnx"]
 
 [node name="World" type="Node2D" groups=["example"]]
+position = Vector2(-32, -44)
+script = ExtResource("1_vi0j3")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -22,3 +26,35 @@ texture = ExtResource("1_apbco")
 [node name="Player" parent="." instance=ExtResource("3_fxkk5")]
 position = Vector2(-150, -150)
 scale = Vector2(0.4, 0.4)
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="CollectSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("6_kvgnx")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 99
+
+[node name="UI" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="Label" parent="HUD/UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 10.0
+offset_right = -92.0
+offset_bottom = 36.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 30
+text = "Score: 1000"
+horizontal_alignment = 2

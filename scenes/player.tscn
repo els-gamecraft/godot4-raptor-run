@@ -319,7 +319,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxvs3"]
 size = Vector2(100, 200)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_mw813")
 
@@ -327,7 +327,7 @@ script = ExtResource("1_mw813")
 sprite_frames = SubResource("SpriteFrames_ih2li")
 animation = &"run"
 autoplay = "run"
-frame_progress = 0.127734
+frame_progress = 0.389234
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 15)
