@@ -1,17 +1,23 @@
 extends Node2D
 
+signal game_over
+
 @export var world_speed := 300
 @export var collectible_pitch_reset_interval := 2000
 
 @onready var moving_environment = $Environment/Moving
 @onready var collect_sound = $Sounds/CollectSound
 @onready var score_label = $HUD/UI/Score
+@onready var player = $Player
+@onready var ground = $Environment/Static/Ground
+@onready var game_over_label = $HUD/UI/GameOver
 
 
 var platform = preload("res://scenes/platform.tscn")
 var platform_collectible_single := preload("res://scenes/platform_collectible_single.tscn")
 var platform_collectible_row := preload("res://scenes/platform_collectible_row.tscn")
 var platform_collectible_rainbow := preload("res://scenes/platform_collectible_rainbow.tscn")
+var platform_enemy := preload("res://scenes/platform_enemy.tscn")
 var rng = RandomNumberGenerator.new()
 var last_platform_position := Vector2.ZERO
 var next_spawn_time := 0
@@ -22,10 +28,20 @@ var reset_collectible_pitch_time := 0
 #Called when the node enters the scene tree for the first time.
 func _ready():
 	rng.randomize()
+	player.player_died.connect(_on_player_died)
+	ground.body_entered.connect(_on_ground_body_entered)
 
 	
 #Called evry frame. 'delta' is elapsed time since the previous frame.
 func _process(delta):
+	if not player.active:
+		#Reload the game if we're not playing and the user hit the enemy or fall
+		if Input.is_action_just_pressed("jump"):
+			get_tree().reload_current_scene()
+		
+		return
+		
+	
 	#Reset the collectible sound pitch after a time
 	if Time.get_ticks_msec() > reset_collectible_pitch_time:
 		collectible_pitch = 1.0
@@ -42,7 +58,8 @@ func _spawn_next_platform():
 		platform,
 		platform_collectible_single,
 		platform_collectible_row,
-		platform_collectible_rainbow
+		platform_collectible_rainbow,
+		platform_enemy
 	]
 	var platform_index = rng.randi_range(0, availible_platforms.size() - 1)
 
@@ -53,7 +70,7 @@ func _spawn_next_platform():
 		new_platform.position = Vector2(400, 0)
 	else:
 		var x = last_platform_position.x + rng.randi_range(450, 550)
-		var y = clamp(last_platform_position.y + rng.randi_range(-150, 150),  200, 1000)
+		var y = clamp(last_platform_position.y + rng.randi_range(-150, 150),  200, 600)
 		new_platform.position = Vector2(x, y)
 		
 	#Add the platform to the moving environment
@@ -65,6 +82,10 @@ func _spawn_next_platform():
 
 
 func _physics_process(delta):
+	if not player.active:
+		return
+		
+	
 	#Move the platform left
 	moving_environment.position.x -= world_speed * delta
 	
@@ -76,3 +97,11 @@ func add_score(value):
 	reset_collectible_pitch_time = Time.get_ticks_msec() + collectible_pitch_reset_interval
 	# print(score)
 	
+func _on_player_died():
+	emit_signal("game_over")
+	game_over_label.text = game_over_label.text % score
+	game_over_label.set_visible(true)
+
+func _on_ground_body_entered(body):
+	if body.is_in_group("player"):
+		player.die()
