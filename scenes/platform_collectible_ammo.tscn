@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://csh5ua1gflhh6"]
+
+[ext_resource type="Texture2D" uid="uid://cedqrdglei7bv" path="res://assets/assets/sprites/Platform/platform.png" id="1_x2y3b"]
+[ext_resource type="PackedScene" uid="uid://dc2p65mblng7e" path="res://scenes/ammo_collectible.tscn" id="2_earrd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m5b3h"]
+size = Vector2(380, 40)
+
+[node name="Platform" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_x2y3b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -20)
+shape = SubResource("RectangleShape2D_m5b3h")
+
+[node name="Collectible" parent="." instance=ExtResource("2_earrd")]
+position = Vector2(5, -111)
+scale = Vector2(0.6, 0.6)

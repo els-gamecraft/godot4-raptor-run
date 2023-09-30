@@ -11,13 +11,14 @@ signal game_over
 @onready var player = $Player
 @onready var ground = $Environment/Static/Ground
 @onready var game_over_label = $HUD/UI/GameOver
-
+@onready var ammo_label = $HUD/UI/Ammo
 
 var platform = preload("res://scenes/platform.tscn")
 var platform_collectible_single := preload("res://scenes/platform_collectible_single.tscn")
 var platform_collectible_row := preload("res://scenes/platform_collectible_row.tscn")
 var platform_collectible_rainbow := preload("res://scenes/platform_collectible_rainbow.tscn")
 var platform_enemy := preload("res://scenes/platform_enemy.tscn")
+var platform_colectible_ammo = preload("res://scenes/platform_collectible_ammo.tscn")
 var rng = RandomNumberGenerator.new()
 var last_platform_position := Vector2.ZERO
 var next_spawn_time := 0
@@ -52,6 +53,7 @@ func _process(delta):
 		
 		#Update the UI labels
 		score_label.text = "Score: %s" % score
+		ammo_label.text = "Ammo: %s" % player.ammo
 		
 func _spawn_next_platform():
 	var availible_platforms = [
@@ -59,7 +61,8 @@ func _spawn_next_platform():
 		platform_collectible_single,
 		platform_collectible_row,
 		platform_collectible_rainbow,
-		platform_enemy
+		platform_enemy,
+		platform_colectible_ammo
 	]
 	var platform_index = rng.randi_range(0, availible_platforms.size() - 1)
 
