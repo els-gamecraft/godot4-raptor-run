@@ -1,11 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccyto1xlxblvm"]
+[gd_scene load_steps=13 format=3 uid="uid://ccyto1xlxblvm"]
 
 [ext_resource type="Texture2D" uid="uid://dqaryv0dboks0" path="res://assets/assets/sprites/Background/background_static.png" id="1_apbco"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_vi0j3"]
 [ext_resource type="PackedScene" uid="uid://c5km7f2nih4cc" path="res://scenes/platform.tscn" id="2_stc43"]
 [ext_resource type="PackedScene" uid="uid://dat5u1s3oqtsx" path="res://scenes/player.tscn" id="3_fxkk5"]
 [ext_resource type="Script" path="res://scripts/PlayArea.gd" id="3_qaoc3"]
+[ext_resource type="Texture2D" uid="uid://b2eqllmsch54l" path="res://assets/assets/sprites/Input_Keys/flatLight47.png" id="4_jb36g"]
 [ext_resource type="AudioStream" uid="uid://c8f3li7c88u8j" path="res://assets/assets/sounds/collect.wav" id="6_kvgnx"]
+[ext_resource type="Texture2D" uid="uid://c2ee4734yg840" path="res://assets/assets/sprites/Input_Keys/flatLight24.png" id="7_70p6v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g4yyd"]
+radius = 60.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_brydp"]
+radius = 60.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43kk5"]
 size = Vector2(1800, 1200)
@@ -21,6 +29,25 @@ script = ExtResource("1_vi0j3")
 
 [node name="Background" type="Sprite2D" parent="Camera2D"]
 texture = ExtResource("1_apbco")
+
+[node name="JumpTouchScreenButton" type="TouchScreenButton" parent="Camera2D"]
+z_index = 99
+position = Vector2(-600, 164)
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_70p6v")
+texture_pressed = ExtResource("7_70p6v")
+shape = SubResource("CircleShape2D_g4yyd")
+action = "jump"
+
+[node name="FireTouchScreenButton" type="TouchScreenButton" parent="Camera2D"]
+z_index = 99
+position = Vector2(599, 322)
+rotation = -3.14159
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_jb36g")
+texture_pressed = ExtResource("4_jb36g")
+shape = SubResource("CircleShape2D_brydp")
+action = "fire"
 
 [node name="Environment" type="Node2D" parent="."]
 
